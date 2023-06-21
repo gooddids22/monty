@@ -1,66 +1,44 @@
 #include "monty.h"
-
 /**
- * push_func - Addes an item to the stack
- * @stack: stack to be appended
- * @operand: data to be added
+ * push_function - Pushes an element to the stack.
+ * @h: Pointer to the head of the stack.
+ * @c: Current line number of the bytecode file.
+ *
+ * Return: void
  */
-
-void push_func(stack_t **stack, unsigned int operand)
+void push_function(stack_t **h, unsigned int c)
 {
-	stack_t *temp_stack, *new;
+	int x, y = 0, flg = 0;
 
-	new = *stack;
-
-	/* Allocate memory for the temporary stack */
-	temp_stack = malloc(sizeof(stack_t));
-	if (!temp_stack)
+	if (data.org_cmnd)
 	{
-		fprintf(stderr, "Error: malloc failed\n");
-		exit(EXIT_FAILURE);
-	}
-
-	temp_stack->prev = NULL;
-	temp_stack->n = operand;
-	temp_stack->next = NULL;
-
-	if (*stack)
-	{
-		if (queueORstack.status == 200)
+		if (data.org_cmnd[0] == '-')
 		{
-			(*stack)->prev = temp_stack;
-			temp_stack->next = *stack;
-			*stack = temp_stack;
+			y++;
 		}
-		else if (queueORstack.status == 100)
+		while (data.org_cmnd[y] != '\0')
 		{
-			while (new->next != NULL)
-				new = new->next;
-			new->next = temp_stack;
-			temp_stack->prev = new;
+			if (data.org_cmnd[y] < 48 || data.org_cmnd[y] > 57)
+				flg = 1;
+			y++;
+		}
+		if (flg == 1)
+		{
+			fprintf(stderr, "L%d: usage: push integer\n", c);
+			fclose(data.file_descriptor);
+			free_td(*h);
+			free(data.buff);
+			exit(1);
 		}
 	}
 	else
-		*stack = temp_stack;
-
-	freee(temp_stack);
-}
-
-/**
- * pall_func - prints details of the stack
- * @stack: Stack
- * @operand: value
- */
-void pall_func(stack_t **stack, unsigned int operand)
-{
-	stack_t *temp_stack;
-
-	temp_stack = *stack;
-	(void)operand;
-
-	while (temp_stack)
 	{
-		printf("%d\n", temp_stack->n);
-		temp_stack = temp_stack->next;
+		fprintf(stderr, "L%d: usage: push integer\n", c);
+		fclose(data.file_descriptor);
+		free_td(*h);
+		free(data.buff);
+		exit(1);
 	}
+	x = atoi(data.org_cmnds);
+	add_node(h, x);
 }
