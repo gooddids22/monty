@@ -1,21 +1,22 @@
 #include "monty.h"
 /**
- * f_pall - prints the stack
- * @head: stack head
- * @counter: no used
- * Return: no return
-*/
-void f_pall(stack_t **head, unsigned int counter)
+ * pall_function - Prints all values on the stack.
+ * @h: Pointer to the head of the stack.
+ * @c: Current line number of the bytecode file.
+ *
+ * Return: void
+ */
+void pall_function(stack_t **h, unsigned int c)
 {
-	stack_t *h;
-	(void)counter;
+	stack_t *temp;
+	(void)c;
 
-	h = *head;
-	if (h == NULL)
+	temp = *h;
+	if (temp == NULL)
 		return;
-	while (h)
+	while (temp)
 	{
-		printf("%d\n", h->n);
-		h = h->next;
+		printf("%d\n", temp->n);
+		temp = temp->next;
 	}
 }
